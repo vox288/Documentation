@@ -8,7 +8,7 @@
 * **[Proxmox](#Proxmox)**
   * [adjust firewall](#Firewall-Configuration)
 
-* **[LXC-Container](#LXC-Container)**
+* **[Container-Setup](#Container-Setup)**
   * [download template](#Templates)
   * [create container](#Container-Setup)
   * [adjust firewall](#Adjust-Firewall)
@@ -56,7 +56,7 @@ for the lower level container firewall settings to take effect.
 
 ---
 
-### LXC Container
+### Container Setup
 
 #### Templates
 Templates can be directly downloaded via the designated proxmox drive\
