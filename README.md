@@ -11,4 +11,5 @@
 
 &nbsp;
 
-[Teamspeak Server](Teamspeak3_Server_Setup.md) - Running a teamspeak server on Proxmox
++ [Teamspeak Server](Teamspeak3_Server_Setup.md) - Setting up a teamspeak server on Proxmox
++ [Samba_FileServer](Samba_Fileserver_Setup.md) - Setting up a simple samba server on Proxmox
