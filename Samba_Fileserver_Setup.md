@@ -15,7 +15,7 @@
 
 * **[Debian LXC-Container](#Debian-Container)**
     * [Samba system user](#Samba-User-Setup)
-    * [Samba server download](#Samba-Server-Download-and-Setup)
+    * [Samba download and setup](#Samba-Server-Download-and-Setup)
     * [Samba share access](#Accessing-the-server)
 
 
