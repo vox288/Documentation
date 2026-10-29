@@ -10,7 +10,7 @@
 
 * **[Container-Setup](#Container-Setup)**
   * [download template](#Templates)
-  * [create container](#Container-Setup)
+  * [create container](#Container-configuration)
   * [adjust firewall](#Adjust-Firewall)
 
 * **[Debian LXC-Container](#Debian-Container)**
@@ -33,11 +33,11 @@
 
 
 
-### Proxmox
+## Proxmox
 The Teamspeak 3 server will be running on an LXC-Container\
 spawned from a local Proxmox setup.
 
-#### Firewall Configuration
+### Firewall Configuration
 
 - **Datacenter** 
   - Firewall should be *ACTIVATED*
@@ -56,15 +56,15 @@ for the lower level container firewall settings to take effect.
 
 ---
 
-### Container Setup
+## Container Setup
 
-#### Templates
-Templates can be directly downloaded via the designated proxmox drive\
-that **CT Templates** are stored in, in my case can be found in the **local** storage\
-within **CT Templates**. Pick one from the **Templates** Tab to download
+### Templates
+Templates can be downloaded directly through the proxmox webinterface.\
+Look for the storage that contain **CT Templates** , most likely **local** or **local-lvm**.\
+Within the **CT Templates** tab we open the **Templates** menu and pick one to download.
 
 
-#### Container Setup
+### Container configuration
 I have chosen a lightweight **debian13-standard** LXC-Container.\
 Now we create the Container via the **Create CT** Button on the top right corner
 
@@ -76,20 +76,22 @@ resource configuration should be **more than enough** :
 
 |Resource|Value|
 |-------|--------|
-|Memory | 1.00 GB|
+|Memory | 1.024 MB|
 |Swap | 512 MB |
 |Cores | 2 |
 |Root Disk | 8 GB|
 
-In Network enter a **static IP**, in **CIDR** notation, matching the *Container ID* is recommended :\
-`Container ID 201 | Container IP 192.168.1.201/24`\
+In Network, enter a **static IP** in **CIDR** notation, matching the *Container ID* is recommended :
+```
+Container ID 201 | Container IP 192.168.1.201/24
+```
 **Gateway** is the routers IP, only use IPv4.\
 **DNS** configuration can be left at default.\
 **Firewall** should be activated for the network interface
 
 ***Create the Container if summary looks okay***
 
-#### Adjust Firewall
+### Adjust Firewall
 In the Container Firewall we need to adjust a few things and define\
 some **Firewall-Rules**, for our server to stay save.\
 Inside the proxmox web interface we select the container and go to\
@@ -124,7 +126,7 @@ limited to the local network like 192.168.1.0/24, or specific machines or a VPN.
 
 ---
 
-### Debian Container
+## Debian Container
 
 Now its time to start our newly created **Debian-Container.** via the **Start** button.\
 After a short boot period, we enter the **Console** of our Container.\
@@ -132,17 +134,19 @@ Login via **root** and enter the freshly configured **Password**.
 
 Inside the container terminal we first run
 
-`root:# apt update && apt upgrade -y`
+```
+root:# apt update && apt upgrade -y
+```
 
 To get our container to an **up to date** state.\
 Consider activating **unattended-upgrades** to keep your container safe and sound.
 
 We also need to install the following packages for later use :
 ```
-root:~# apt install rsync wget unzip bzip2 lsb-release gdb mailutils
+root:~# apt install vim rsync wget unzip bzip2 lsb-release gdb mailutils
 ```
 
-#### TS3 User Setup
+### TS3 User Setup
 Now we create a dedicated user account for our teamspeak 3 server to keep things organized and separated from our root user.
 
 ```
@@ -151,10 +155,10 @@ root:# useradd -m -r -s /bin/bash teamspeak_3
 
 + **useradd** creates a new user\
 + **-m** creates a home directory\
-+ **-r** creates a system-user used for daemons and services\
-+ **-s** sets our shell to bash (for now)
++ **-r** creates a restricted system-user for daemons and services\
++ **-s /bin/bash** sets our shell to bash (for now)
 
-#### TS3 Server Download and Setup
+### TS3 Server Download and Setup
 With our new system user configured we **log into** teamspeak_3,\
 make sure we are inside our user's home directory\
 and download the latest Teamspeak 3 **Server** package for Linux.
@@ -211,7 +215,7 @@ The server should be **running** now, you can check its status with :
 teamspeak3:~/teamspeak_server$ ./ts3server_startscript.sh status
 ```
 
-#### TS3 Server Configuration
+### TS3 Server Configuration
 
 Next up we can use a **Teamspeak3 Client** to connect to our server,\
 using the local network IP of our **Container** *192.168.1.201*.\
@@ -234,7 +238,7 @@ teamspeak3:~/teamspeak_server$ ./ts3server_minimal_runscript.sh serveradmin_pass
 A new **Privilege Key** can be generated under the **rights** menu\
 enty, if we are logged into our server as the administrator.
 
-#### Create a Service
+### Create a Service
 
 Now we will create a **daemon** or **service**, so our teamspeak server\
 is started automatically every time the container boots or\
@@ -304,7 +308,7 @@ root:~# systemctl start teamspeak3.service
 ```
 
 
-#### Auto Updates
+### Auto Updates
 To keep our teamspeak server **secure**, it is important that it stays **up to date**.
 
 Instead of manually updating it every now and then we will use the\
@@ -428,7 +432,7 @@ Check if the timer is loaded correctly with :
 systemctl list-timers
 ```
 
-#### User Lockdown
+### User Lockdown
 
 Since the server and automated updates are working fine now,\
 it is time to **lock down** the login for our **teamspeak_3** user.\
@@ -451,14 +455,14 @@ root:~# usermod -s /bin/false teamspeak_3
 
 ---
 
-### Router Config
+## Router Config
 Right now our server is fully functional, but only accessible\
 from our local network via the container's IP.
 
 To make it reachable from the internet we'll have to make some last\
 adjustments, mainly inside our router.
 
-#### Open necessary Ports
+### Open necessary Ports
 First of all we need to enable **Port-Forwarding** to our container,\
 for the ports Teamspeak 3 relies on.
 
@@ -470,7 +474,7 @@ forwarded to the **container** for the ports :
 192.168.1.201|TCP|30033|
 192.168.1.201|UDP|9987|
 
-#### Server Address
+### Server Address
 
 Now our server is exposed to the internet and reachable for clients\
 by the **IP** that we get from the **Internet-Provider**.
