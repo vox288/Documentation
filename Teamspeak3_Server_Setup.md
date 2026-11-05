@@ -261,7 +261,7 @@ ConditionPathExists=!/home/teamspeak_3/teamspeak3_server/.ts3updatescript.lock
 [Service]
 Type=forking
 User=teamspeak_3
-WorkingDirectory=/home/teamspeak_3/
+WorkingDirectory=/home/teamspeak_3/teamspeak3_server/
 ExecStart=/bin/bash /home/teamspeak_3/teamspeak3_server/ts3server_startscript.sh start
 ExecReload=/bin/bash /home/teamspeak_3/teamspeak3_server/ts3server_startscript.sh restart
 ExecStop=/bin/bash /home/teamspeak_3/teamspeak3_server/ts3server_startscript.sh stop
