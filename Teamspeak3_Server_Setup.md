@@ -389,7 +389,7 @@ Wants=network-online.target
 [Service]
 Type=oneshot
 ExecStart=/home/teamspeak_3/teamspeak3_update_script/TS3UpdateScript --check --delete-old-logs --inform-online-clients
-WorkingDirectory=/home/teamspeak_3
+WorkingDirectory=/home/teamspeak_3/teamspeak3_update_script/
 
 [Install]
 WantedBy=multi-user.target                          
