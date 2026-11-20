@@ -266,8 +266,11 @@ ExecStart=/bin/bash /home/teamspeak_3/teamspeak3_server/ts3server_startscript.sh
 ExecReload=/bin/bash /home/teamspeak_3/teamspeak3_server/ts3server_startscript.sh restart
 ExecStop=/bin/bash /home/teamspeak_3/teamspeak3_server/ts3server_startscript.sh stop
 PIDFile=/home/teamspeak_3/teamspeak3_server/ts3server.pid
-Restart=always
+Restart=on-failure
 RestartSec=10
+StartLimitBurst=5
+StartLimitIntervalSec=100
+StartLimitAction=reboot
 
 [Install]
 WantedBy=multi-user.target
@@ -283,15 +286,18 @@ The parameters mean the following:
   + Type - (defines how the service should be started)
   + User - (defines the user that sould own the service)
   + WorkingDirectory - (defines in what directory the service will be started)
-  + ExecStart - (define the action when systemctl start service is run)
-  + ExecReload - (define the action when systemctl restart service is run)
-  + ExecStop - (define the action when systemctl stop service is run)
-  + PIDFile - (define where the PID-File for the Process should be placed)
-  + Restart - (define is the service should be restarted automatically)
-  + RestartSec - (define a timer for the restart behavior)
+  + ExecStart - (defines the action when systemctl start service is run)
+  + ExecReload - (defines the action when systemctl restart service is run)
+  + ExecStop - (defines the action when systemctl stop service is run)
+  + PIDFile - (defines where the PID-File for the Process should be placed)
+  + Restart - (defines if the service should be restarted automatically)
+  + RestartSec - (defines a timer for the restart behavior)
+  + StartLimitBurst - (defines the maximum retries allowed)
+  + StartLimitIntervalSec - (defines the time limit for number of restart tries)
+  + StartLimitAction - (defines an action, if all restarts in timelimit failed)
 
 + **[Install]**
-  + WantedBy - (define a target or service that softly depends on our service)
+  + WantedBy - (defines a target or service that softly depends on our service)
 
 **Done** we have successfully created a service unit, now we need to reload systemd with :
 ```
